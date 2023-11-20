@@ -46,9 +46,22 @@ public class CountryController {
         return "redirect:/country/list";
     }
 
+/*
     // 削除画面(削除画面に遷移させているだけ)
     @GetMapping("/delete")
     public String deleteCountryForm(Model model) {
+        return "country/delete";
+    }
+*/
+
+    // 追加したメソッド
+    @GetMapping(value = {"/delete", "/delete/{code}"})
+    public String deleteCountryForm(@PathVariable(name = "code", required = false) String code, Model model) {
+        // codeが指定されていたら検索結果、なければ空のクラスを設定
+        // 空のオブジェクトを作成してModelに登録することでdelete.htmlでエラーになるのを防ぐ
+        Country country = code != null ? service.getCountry(code) : new Country();
+        // Modelに登録
+        model.addAttribute("country", country);
         return "country/delete";
     }
 
